@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DonutButBetter</title>
+<meta name="description" content="DonutButBetter: a Minecraft survival server with an economy, shards, teams, PvP and more. Java and Bedrock.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e8789b'/><circle cx='50' cy='50' r='14' fill='%2314101a'/></svg>">
+<style>
+:root {
+  --bg: #5e3a22;
+  --panel: #724a2c;
+  --line: #8e603a;
+  --text: #fff3e6;
+  --muted: #e6c9ab;
+  --accent: #ff6fae;
+  --accent2: #e9a95a;
+  --green: #5bd17f;
+  --red: #e65b5b;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: clip; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+a { color: var(--accent); }
+code { background: var(--line); padding: 1px 6px; border-radius: 5px; font-size: .9em; }
+
+.nav {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding: 12px 24px;
+  background: rgba(255, 111, 174, .96); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 800; font-size: 1.15rem; }
+.donut { width: 22px; height: 22px; border-radius: 50%; border: 7px solid var(--accent); }
+.nav nav { display: flex; gap: 18px; flex-wrap: wrap; }
+.nav nav a { color: var(--muted); text-decoration: none; font-weight: 600; }
+.nav nav a:hover { color: var(--text); }
+
+main { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+section:last-child { border-bottom: 0; }
+h1 { font-size: clamp(2.2rem, 7vw, 4rem); line-height: 1.1; margin: 0 0 12px; }
+h2 { font-size: 1.9rem; margin: 0 0 24px; }
+h3 { margin: 0 0 8px; }
+h3.sub { color: var(--muted); font-size: 1rem; text-transform: uppercase; letter-spacing: .08em; margin: 24px 0 12px; }
+.accent { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { color: var(--muted); font-size: 1.15rem; max-width: 560px; margin: 0 auto 28px; }
+.small { color: var(--muted); font-size: .9rem; }
+
+.hero { text-align: center; padding: 80px 0 64px; }
+.ip {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 16px 32px; max-width: 100%;
+  background: var(--panel); color: var(--text);
+  border: 2px solid var(--accent); border-radius: 14px;
+  cursor: pointer; font: inherit; transition: transform .1s;
+}
+.ip:hover { transform: translateY(-2px); }
+.ip-label, .ip-hint { color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; }
+.ip-value { font-size: clamp(1.2rem, 5vw, 1.7rem); font-weight: 800; overflow-wrap: anywhere; }
+
+.status { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 18px 0; color: var(--muted); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); }
+.status.online .dot { background: var(--green); box-shadow: 0 0 10px var(--green); }
+.status.offline .dot { background: var(--red); }
+.status.online { color: var(--text); }
+
+.hero-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 8px 0 14px; }
+
+/* Donut look: frosted nav and hero with sprinkles over a golden dough edge. */
+.nav { border-bottom: 5px solid var(--accent2); }
+.nav .brand, .nav nav a { color: #ffe9d0; }
+.nav nav a:hover { color: #fff; }
+.nav { background: #5e3a1f; }
+.nav nav a.active { color: #fff; border-bottom: 3px solid var(--accent2); padding-bottom: 2px; }
+main > section[hidden] { display: none; }
+.logo { display: block; height: 64px; width: auto; image-rendering: pixelated; }
+.hero {
+  width: 100vw; margin-left: calc(50% - 50vw); padding-left: 16px; padding-right: 16px;
+  border-bottom: 10px solid var(--accent2);
+  background-color: #ff6fae;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Crect x='20' y='30' width='16' height='5' rx='2.5' fill='%23fff' transform='rotate(30 20 30)'/%3E%3Crect x='110' y='20' width='16' height='5' rx='2.5' fill='%23ffe14d' transform='rotate(-40 110 20)'/%3E%3Crect x='210' y='50' width='16' height='5' rx='2.5' fill='%234dd2ff' transform='rotate(70 210 50)'/%3E%3Crect x='60' y='110' width='16' height='5' rx='2.5' fill='%237dea7d' transform='rotate(-65 60 110)'/%3E%3Crect x='160' y='120' width='16' height='5' rx='2.5' fill='%23fff' transform='rotate(20 160 120)'/%3E%3Crect x='235' y='160' width='16' height='5' rx='2.5' fill='%23ffe14d' transform='rotate(-25 235 160)'/%3E%3Crect x='30' y='200' width='16' height='5' rx='2.5' fill='%234dd2ff' transform='rotate(50 30 200)'/%3E%3Crect x='120' y='220' width='16' height='5' rx='2.5' fill='%23fff' transform='rotate(-15 120 220)'/%3E%3Crect x='190' y='235' width='16' height='5' rx='2.5' fill='%237dea7d' transform='rotate(60 190 235)'/%3E%3C/svg%3E");
+}
+.hero { position: relative; }
+.hero > * { position: relative; }
+.hero, .hero .lead, .hero .small, .hero .status { color: #3a1d10; font-weight: 600; }
+.hero .accent { background: none; color: #fff; -webkit-text-fill-color: #fff; text-shadow: 0 3px 0 #3a1d10; }
+.hero-links a.btn { background: #3a1d10; color: #fff; border-color: #3a1d10; }
+.btn {
+  display: inline-block; padding: 11px 22px; border-radius: 10px;
+  background: var(--accent); color: #2a1009; font-weight: 700; text-decoration: none;
+}
+.btn.ghost { background: transparent; color: var(--text); border: 2px solid var(--line); }
+.btn[hidden] { display: none; }
+.small-btn { padding: 8px 16px; margin-top: 8px; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+.card p { margin: 0; color: var(--muted); }
+.card ol, .card ul { margin: 0; padding-left: 20px; }
+.card li { margin: 4px 0; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { padding: 8px 16px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); font-weight: 700; }
+.chips.staff .chip { background: #170d08; border-color: var(--accent); }
+
+
+.store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+.rank { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.rank.best { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.rank h3 { margin: 0; font-size: 1.3rem; }
+.price { font-size: 2rem; font-weight: 800; }
+.price small { font-size: .85rem; color: var(--muted); font-weight: 600; }
+.rank ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: .92rem; flex: 1; }
+.rank .btn { text-align: center; }
+.tag { align-self: flex-start; background: var(--accent); color: #2a1009; font-size: .72rem; font-weight: 800; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; }
+.notice { margin-top: 18px; padding: 14px 18px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); font-size: .9rem; }
+
+.cmds { list-style: none; padding-left: 0 !important; }
+.cmds li { margin: 8px 0 !important; color: var(--muted); }
+.cmds code { color: var(--text); font-weight: 700; }
+.cmds .alias { font-size: .85rem; }
+
+footer { text-align: center; padding: 32px 16px; color: var(--muted); font-size: .85rem; }
+
+@media (max-width: 600px) {
+  .nav { padding: 10px 16px; }
+  .nav nav { gap: 12px; font-size: .9rem; }
+  section { padding: 40px 0; }
+  .hero { padding: 48px 0 40px; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="#top"><img class="logo" src="logo.png" alt="DonutButBetter"></a>
+  <nav>
+    <a href="#top">Home</a>
+    <a href="#about">About</a>
+    <a href="#join">Join</a>
+    <a href="#features">Features</a>
+    <a href="#commands">Commands</a>
+    <a href="#server-features">Server Features</a>
+    <a href="#ranks">Ranks</a>
+    <a href="#store">Store</a>
+    <a href="#rules">Rules</a>
+    <a href="#modpack">Modpack</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <h1>Survival, but <span class="accent">better</span>.</h1>
+    <p class="lead">Grind money and shards, build your base, team up, and fight for the top of the leaderboards.</p>
+
+    <button class="ip" id="ip-button" type="button" title="Click to copy">
+      <span class="ip-label">Server address</span>
+      <span class="ip-value" id="ip-value">loading…</span>
+      <span class="ip-hint" id="ip-hint">Click to copy</span>
+    </button>
+    <p class="lead" style="font-size:0.95em">Can't connect? Try the backup IP: <b>76.164.199.237</b></p>
+
+    <div class="status" id="status">
+      <span class="dot"></span><span id="status-text">Checking server…</span>
+    </div>
+
+    <div class="hero-links">
+      <a class="btn" href="#join">How to join</a>
+      <a class="btn ghost" id="discord-link" href="#" target="_blank" rel="noopener" hidden>Join our Discord</a>
+    </div>
+    <p class="small">Java 1.20 to the newest version · Bedrock supported</p>
+  </section>
+
+  <section id="about">
+    <h2>About the server</h2>
+    <p>DonutButBetter is a survival server built around a player-run economy. You start with nothing, drop into the wild with <code>/rtp</code>, and work your way up by farming, trading and fighting. It's a new server, so everyone is still early and there's plenty of room to get ahead.</p>
+    <div class="cards">
+      <div class="card"><h3>💰 Getting rich</h3><p>Sell what you farm with <code>/sell</code>. Prices are live: when too much of an item gets sold, its price drops, so it pays to farm what others aren't. Check prices any time with <code>/worth</code> and <code>/prices</code>, and race up <code>/baltop</code>.</p></div>
+      <div class="card"><h3>🤝 Trading with players</h3><p>List items on the auction house with <code>/ah</code>, or post a buy request with <code>/orders</code> and let other players fill it. Your money is held safely until the items are delivered. <code>/trade</code> lets you swap face to face without getting scammed.</p></div>
+      <div class="card"><h3>🏭 Spawners</h3><p>Stack up to 10,000 spawners of one mob into a single block. They don't spawn mobs. Instead, they make loot and XP into storage while you're nearby, so you can build a real money machine without the lag.</p></div>
+      <div class="card"><h3>💎 Shards</h3><p>Shards are a second currency you earn from playtime, kills and standing in the <code>/afk</code> area. Spend them in <code>/shardshop</code> on spawners and name styles, or on crates.</p></div>
+      <div class="card"><h3>⚔️ PvP and bounties</h3><p>Every hit puts you in combat for 20 seconds: no teleporting, no ender chest, no running into spawn, and logging out counts as dying. Put money on a rival's head with <code>/bounty</code>, or collect the ones on others.</p></div>
+      <div class="card"><h3>🏠 Bases and teams</h3><p>Set homes, build with friends using <code>/team</code>, and get around with <code>/tpa</code> and <code>/warp</code>. Selling a base? Homes can be transferred to another player, and <code>/homemarkers</code> shows buyers where the homes are.</p></div>
+      <div class="card"><h3>✨ Showing off</h3><p>Buy flex skins with titles like Millionaire and Billionaire using <code>/skins</code>, style your name with <code>/nick</code>, try your luck on <code>/cf</code> coin flips, and pitch in on the server-wide <code>/goal</code> pot.</p></div>
+      <div class="card"><h3>🛡️ Fair for everyone</h3><p>Paid ranks only add convenience, like more homes and shorter <code>/rtp</code> and <code>/tpa</code> waits. You can't buy money, gear or spawners. A custom anticheat and active staff keep hackers and dupers out.</p></div>
+      <div class="card"><h3>🎮 Play on anything</h3><p>Join on Java from 1.20 to the newest version, or on Bedrock from a phone, console or Windows. No mods needed.</p></div>
+    </div>
+  </section>
+
+  <section id="join">
+    <h2>How to join</h2>
+    <div class="cards three">
+      <div class="card">
+        <h3>Java Edition</h3>
+        <ol>
+          <li>Open Minecraft and go to <b>Multiplayer</b>.</li>
+          <li>Click <b>Add Server</b>.</li>
+          <li>Paste the address <b class="ip-text">above</b> and click <b>Done</b>.</li>
+        </ol>
+        <p class="small">Any version from 1.20 up works. 1.21.10 is best.</p>
+      </div>
+      <div class="card">
+        <h3>Bedrock Edition</h3>
+        <ol>
+          <li>Go to <b>Play → Servers → Add Server</b>.</li>
+          <li>Address: <b class="bedrock-ip">see above</b></li>
+          <li>Port: <b class="bedrock-port">19132</b></li>
+        </ol>
+        <p class="small">Phone, Xbox, PlayStation, Switch and Windows.</p>
+      </div>
+      <div class="card">
+        <h3>Get the modpack (optional)</h3>
+        <p>Shows moving skins, adds voice chat and makes the game run smoother. You don't need it to play.</p>
+        <a class="btn small-btn" href="#modpack">Modpack guide</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <h2>What's on the server</h2>
+    <div class="cards">
+      <div class="card"><h3>💰 Economy</h3><p>Sell your farms with <code>/sell</code>, prices move with supply, and trade with other players.</p></div>
+      <div class="card"><h3>💎 Shards</h3><p>A second currency you earn by playing. Spend it in <code>/shardshop</code> on spawners and nick styles.</p></div>
+      <div class="card"><h3>🏠 Homes &amp; teams</h3><p>Set homes, team up with friends, and use <code>/homemarkers</code> to check a base before you buy it.</p></div>
+      <div class="card"><h3>⚔️ PvP</h3><p>Fight for kills and climb the leaderboards. Combat logging won't save you.</p></div>
+      <div class="card"><h3>🎲 Coin flips</h3><p>Bet money or shards against other players with <code>/cf</code>.</p></div>
+      <div class="card"><h3>🛡️ Fair play</h3><p>A custom anticheat and active staff keep hackers and dupers out.</p></div>
+    </div>
+  </section>
+
+  <section id="commands">
+    <h2>Commands</h2>
+    <p class="small">Every command a player can use. Type <code>/help</code> in game for the same list in a menu. Other names that also work are shown in brackets.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>💰 Money &amp; trading</h3>
+        <ul class="cmds">
+          <li><code>/balance</code> <span class="alias">(/bal, /money)</span>: your money, or another player's.</li>
+          <li><code>/pay &lt;player&gt; &lt;amount&gt;</code>: send money to a player.</li>
+          <li><code>/baltop</code>: the richest players.</li>
+          <li><code>/sell</code>: open the sell menu, or sell what's in your hand.</li>
+          <li><code>/worth</code> <span class="alias">(/price)</span>: what an item sells for right now.</li>
+          <li><code>/prices</code>: items whose price dropped because too many were sold.</li>
+          <li><code>/earnings</code>: your lifetime earnings and how close you are to Commoner.</li>
+          <li><code>/ah</code> <span class="alias">(/auction)</span>: the auction house. Buy and sell with players.</li>
+          <li><code>/orders</code>: ask players to sell you items. Your money is held safely until they deliver.</li>
+          <li><code>/trade &lt;player&gt;</code>: swap items face to face, safely.</li>
+          <li><code>/shop</code>: buy items from the server shop.</li>
+          <li><code>/cf</code> <span class="alias">(/coinflip)</span>: coin flip another player for money or shards.</li>
+          <li><code>/bounty</code>: put money on a player's head, or see the bounties.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>💎 Shards &amp; cosmetics</h3>
+        <ul class="cmds">
+          <li><code>/shards</code>: your shards and the shard leaderboard.</li>
+          <li><code>/shardshop</code>: spend shards on spawners, name styles and crate keys.</li>
+          <li><code>/sellspawners</code>: sell spawners back to the server for shards.</li>
+          <li><code>/crates</code>: open crates with your keys and see what's inside.</li>
+          <li><code>/nick</code>: change your name colour, font and chat colour.</li>
+          <li><code>/skins</code>: buy and wear flex skins and titles.</li>
+          <li><code>/tags</code>: pick which of your tags show in the tab list.</li>
+          <li><code>/vote</code>: vote links, your votes and vote rewards.</li>
+          <li><code>/serverauction</code> <span class="alias">(/sauction)</span>: bid on rare server cosmetics.</li>
+          <li><code>/goal</code>: chip in to the server-wide goal pot.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🧭 Teleporting</h3>
+        <ul class="cmds">
+          <li><code>/rtp</code> <span class="alias">(/wild)</span>: go to a random spot in the wild.</li>
+          <li><code>/rtpqueue</code>: queue for a 1v1 fight at a random spot.</li>
+          <li><code>/spawn</code>: go to spawn.</li>
+          <li><code>/warp</code>: the warp menu.</li>
+          <li><code>/afk</code>: go to the AFK area, where standing still earns shards.</li>
+          <li><code>/sethome</code>, <code>/home</code>, <code>/delhome</code>: set, visit and delete your homes.</li>
+          <li><code>/homemarkers</code>: show nearby homes as red particles (handy before buying a base).</li>
+          <li><code>/tpa &lt;player&gt;</code>: ask to teleport to a player.</li>
+          <li><code>/tpahere &lt;player&gt;</code>: ask a player to teleport to you.</li>
+          <li><code>/tpaccept</code>, <code>/tpdeny</code>: accept or deny a teleport request.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>👥 Friends, teams &amp; chat</h3>
+        <ul class="cmds">
+          <li><code>/team</code>: make and manage a team, with a shared team home.</li>
+          <li><code>/tc</code>: talk in team chat.</li>
+          <li><code>/friend</code> <span class="alias">(/f)</span>: add, accept and remove friends.</li>
+          <li><code>/party</code> <span class="alias">(/p)</span>: make a party with friends.</li>
+          <li><code>/pc</code>: talk in party chat.</li>
+          <li><code>/msg &lt;player&gt;</code> <span class="alias">(/tell, /w, /pm)</span>: private message.</li>
+          <li><code>/reply</code> <span class="alias">(/r)</span>: reply to your last message.</li>
+          <li><code>/stats</code>: a player's money, shards, playtime, kills, deaths and more.</li>
+          <li><code>/leaderboards</code> <span class="alias">(/top)</span>: the top players on every leaderboard.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>⚙️ Settings &amp; help</h3>
+        <ul class="cmds">
+          <li><code>/help</code>: every command you can use, by category.</li>
+          <li><code>/settings</code>: turn chat, messages, requests, alerts, the scoreboard and more on or off.</li>
+          <li><code>/nv</code>: night vision on or off.</li>
+          <li><code>/song</code>: which song is playing at spawn.</li>
+          <li><code>/report &lt;player&gt;</code>: report a player to staff.</li>
+          <li><code>/bugreport</code>: report a bug. Your spot and held item are saved with it.</li>
+          <li><code>/voicerules</code>: the voice chat rules.</li>
+          <li><code>/link</code>: link your account to our Discord.</li>
+          <li><code>/modpack</code>: get the modpack link.</li>
+          <li><code>/endevent yes</code> or <code>no</code>: answer the End Event poll.</li>
+          <li><code>/kill</code>: kill yourself (if you're stuck).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>👑 Rank perks</h3>
+        <ul class="cmds">
+          <li><code>/craft</code>: a crafting table anywhere. Rich and up.</li>
+          <li><code>/ec</code> <span class="alias">(/enderchest)</span>: your ender chest anywhere. Rich and up.</li>
+          <li><code>/hat</code>: wear the item in your hand. Rich and up.</li>
+          <li><code>/fly</code>: fly at spawn. Elite and Royal.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="server-features">
+    <h2>Server features</h2>
+    <p class="small">Custom things we built that you won't find on a normal server, and that aren't commands.</p>
+    <div class="cards">
+      <div class="card"><h3>🏘️ Villager bucket</h3><p>Right-click a villager with an empty bucket to pick it up. Right-click a block to put it back down. It keeps all its trades, level, job and name, and the bucket shows its trades when you hover over it. A villager you just placed can't be hurt for 5 seconds.</p></div>
+      <div class="card"><h3>🧟 Zombie villagers every time</h3><p>When a zombie kills a villager, it always turns into a zombie villager. Cure it for cheap trades.</p></div>
+      <div class="card"><h3>📦 Bigger ender chest</h3><p>Your ender chest has 54 slots, double the normal size.</p></div>
+      <div class="card"><h3>🔮 Amethyst tools</h3><p>Special tools bought with shards in <code>/shop</code>: a Silk Touch and a Fortune pickaxe that mine 3x3, a tree axe that cuts down whole trees, a sell axe that sells chests, and an endless water bucket. The tools last 7 days; the water bucket never runs out.</p></div>
+      <div class="card"><h3>🏭 Spawner stacking</h3><p>Stack up to 10,000 spawners of one mob in a single block. Instead of spawning mobs, they make loot and XP into their storage while you're nearby. No lag, just money.</p></div>
+      <div class="card"><h3>🏷️ Prices on hover</h3><p>Items in menus show what they're worth. Turn it on or off with Worth Display in <code>/settings</code>.</p></div>
+      <div class="card"><h3>📊 Scoreboard and balance tags</h3><p>A sidebar shows your money, shards and stats. Players' money and shards also show under their names. Both can be turned off in <code>/settings</code>.</p></div>
+      <div class="card"><h3>🏆 Leaderboards at spawn</h3><p>Live leaderboards stand at spawn and update on their own.</p></div>
+      <div class="card"><h3>💤 AFK area</h3><p>Stand in the AFK area to earn 1 shard every minute. If you stand still on the spawn island for 2 minutes, you're moved there for you.</p></div>
+      <div class="card"><h3>💎 Earning shards</h3><p>You earn shards just by playing, by killing players and from voting. Killing the same player again only pays after 20 minutes.</p></div>
+      <div class="card"><h3>⚔️ Combat tag</h3><p>Every PvP hit puts both players in combat for 20 seconds. No teleporting, no ender chest and no running into spawn. Logging out in combat counts as dying.</p></div>
+      <div class="card"><h3>⚡ Fast crystals</h3><p>Turn on Fast Crystals in <code>/settings</code> and end crystals vanish the moment you hit them, so you can place the next one right away.</p></div>
+      <div class="card"><h3>🗳️ Vote rewards</h3><p>Every vote pays money, shards and a crate key, and counts toward a server-wide vote party. Vote enough and you unlock tags, a particle trail and a chat colour. The top voter each month gets the [Top Voter] tag.</p></div>
+      <div class="card"><h3>✨ Flex skins</h3><p>Rich-player skins like Millionaire and Billionaire come with titles and effects around you, like spinning coins and a crown. Everyone sees them. With our modpack, you also see moving skins and capes.</p></div>
+      <div class="card"><h3>🎵 Spawn music</h3><p>Music plays at spawn, with special playlists for holidays. Turn on Streamer Mode in <code>/settings</code> to turn it off.</p></div>
+      <div class="card"><h3>🐉 The End Event</h3><p>The End is closed at first. When the End Event starts, everyone gets a yes or no poll. Players who join start with empty inventories next to a stronghold and race to kill the dragon. The winner gets the [Legacy] title, $10 million, the dragon head and the egg. After that, the End opens for everyone.</p></div>
+      <div class="card"><h3>🧹 Smart item clear</h3><p>Items on the ground are cleared every 5 minutes, with a countdown first. Items from farms (on hoppers or in water streams leading to them) are left alone.</p></div>
+      <div class="card"><h3>🧱 Lag protection</h3><p>Each chunk can hold up to 512 hoppers and 120 minecarts, so one huge farm can't lag everyone else.</p></div>
+      <div class="card"><h3>🗡️ Respawn kit and more settings</h3><p><code>/settings</code> also has a respawn kit, auto-accept for teleports, hide RTP coordinates, mob spawns near you, death messages, particles and much more.</p></div>
+      <div class="card"><h3>🔄 Daily restart</h3><p>The server restarts once a day to stay smooth. You get chat reminders starting an hour before.</p></div>
+      <div class="card"><h3>🚪 Fast joining</h3><p>If lots of players join at once, there's a short queue. Players with any rank skip it.</p></div>
+      <div class="card"><h3>🤬 Clean chat</h3><p>Swear words in chat, messages, signs and item names are starred out, and slurs are blocked.</p></div>
+    </div>
+  </section>
+
+  <section id="ranks">
+    <h2>Ranks</h2>
+    <h3 class="sub">Player ranks</h3>
+    <div class="chips">
+      <span class="chip">Commoner</span><span class="chip">Rich</span><span class="chip">VIP</span>
+      <span class="chip">Noble</span><span class="chip">Elite</span><span class="chip">Royal</span>
+    </div>
+    <h3 class="sub">Staff team</h3>
+    <div class="chips staff">
+      <span class="chip">Owner</span><span class="chip">Co-Owner</span><span class="chip">Dev</span>
+      <span class="chip">Sr Admin</span><span class="chip">Admin</span><span class="chip">Helper</span>
+    </div>
+  </section>
+
+  <section id="store">
+    <h2>Store</h2>
+    <p class="small">Ranks are given to you in game automatically after you pay. If you're offline, you get it when you next join. Everyone starts as Commoner for free.</p>
+    <p class="small"><strong>Already have a rank?</strong> Upgrade to any higher rank for $4.99 off: VIP $5.00, Noble $15.00, Elite $30.00, Royal $45.00.</p>
+    <div class="store-grid">
+      <div class="rank">
+        
+        <h3>Rich</h3>
+        <div class="price">$4.99 <small>one-time</small></div>
+        <ul>
+          <li>5 homes</li>
+          <li>/rtp cooldown 25s (45s without a rank)</li>
+          <li>/tpa &amp; /tpahere cooldown 25s</li>
+          <li>+2 order &amp; auction slots</li>
+          
+          <li>Rich tag in chat &amp; tab</li>
+          <li>/craft, /ec &amp; /hat anywhere</li>
+          <li>Skip the join queue</li>
+        </ul>
+        <a class="btn store-link" href="#" target="_blank" rel="noopener">Buy Rich</a>
+      </div>
+      <div class="rank">
+        
+        <h3>VIP</h3>
+        <div class="price">$9.99 <small>one-time</small></div>
+        <ul>
+          <li>8 homes</li>
+          <li>/rtp cooldown 15s</li>
+          <li>/tpa &amp; /tpahere cooldown 15s</li>
+          <li>+3 order &amp; auction slots</li>
+          
+          <li>VIP tag in chat &amp; tab</li>
+          <li>/craft, /ec &amp; /hat anywhere</li>
+          <li>Skip the join queue</li>
+        </ul>
+        <a class="btn store-link" href="#" target="_blank" rel="noopener">Buy VIP</a>
+      </div>
+      <div class="rank">
+        
+        <h3>Noble</h3>
+        <div class="price">$19.99 <small>one-time</small></div>
+        <ul>
+          <li>12 homes</li>
+          <li>/rtp cooldown 8s</li>
+          <li>/tpa &amp; /tpahere cooldown 8s</li>
+          <li>+4 order &amp; auction slots</li>
+          
+          <li>Noble tag in chat &amp; tab</li>
+          <li>/craft, /ec &amp; /hat anywhere</li>
+          <li>Skip the join queue</li>
+        </ul>
+        <a class="btn store-link" href="#" target="_blank" rel="noopener">Buy Noble</a>
+      </div>
+      <div class="rank best">
+        <span class="tag">Most popular</span>
+        <h3>Elite</h3>
+        <div class="price">$34.99 <small>one-time</small></div>
+        <ul>
+          <li>20 homes</li>
+          <li>/rtp cooldown 3s</li>
+          <li>/tpa &amp; /tpahere cooldown 3s</li>
+          <li>+5 order &amp; auction slots</li>
+          <li>Fly at spawn</li>
+          <li>Elite tag in chat &amp; tab</li>
+          <li>/craft, /ec &amp; /hat anywhere</li>
+          <li>Skip the join queue</li>
+        </ul>
+        <a class="btn store-link" href="#" target="_blank" rel="noopener">Buy Elite</a>
+      </div>
+      <div class="rank">
+        
+        <h3>Royal</h3>
+        <div class="price">$49.99 <small>one-time</small></div>
+        <ul>
+          <li>30 homes</li>
+          <li>No /rtp cooldown</li>
+          <li>No /tpa or /tpahere cooldown</li>
+          <li>Max order &amp; auction slots</li>
+          <li>Fly at spawn</li>
+          <li>Royal tag in chat &amp; tab</li>
+          <li>/craft, /ec &amp; /hat anywhere</li>
+          <li>Skip the join queue</li>
+        </ul>
+        <a class="btn store-link" href="#" target="_blank" rel="noopener">Buy Royal</a>
+      </div>
+    </div>
+    <div class="notice">Payments are handled securely by our store provider (card, PayPal, Apple Pay, Google Pay). Purchases are convenience and cosmetic perks that support the server. Not affiliated with Mojang or Microsoft. <span id="store-pending">The store is opening soon.</span></div>
+  </section>
+
+  <section id="rules">
+    <h2>Rules</h2>
+    <div class="cards two">
+      <div class="card">
+        <h3>No cheating</h3>
+        <ul>
+          <li>No hacked clients: kill aura, reach, fly, speed, x-ray.</li>
+          <li>No auto-clickers or macros.</li>
+          <li>No duping or abusing bugs. Found one? Report it to staff.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Be decent</h3>
+        <ul>
+          <li>No spam, insults, slurs or hate speech.</li>
+          <li>No advertising other servers.</li>
+          <li>No alt abuse or dodging bans.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small">Staff can't help with scams or griefing, so use <code>/trade</code> and protect your stuff. If you lost items to a hacker, report it with video proof. Screenshots aren't accepted, and if the video isn't clear enough, staff can't help.</p>
+    <p class="small">Breaking rules gets you a warning, a mute or a ban. Duping, ban evasion and advertising are permanent bans.</p>
+  </section>
+
+  <section id="modpack">
+    <h2>Modpack</h2>
+    <div class="cards two">
+      <div class="card">
+        <h3>Easy way: Modrinth App</h3>
+        <ol>
+          <li>Install the <a href="https://modrinth.com/app" target="_blank" rel="noopener">Modrinth App</a>.</li>
+          <li>Open the DonutButBetter pack and click <b>Install</b>. It includes voice chat.</li>
+          <li>Click <b>Play</b> and join the server.</li>
+        </ol>
+        <a class="btn small-btn" id="modpack-link" href="#" target="_blank" rel="noopener" hidden>Open the modpack</a>
+      </div>
+      <div class="card">
+        <h3>Normal launcher (Fabric)</h3>
+        <ol>
+          <li>Install <a href="https://fabricmc.net/use" target="_blank" rel="noopener">Fabric</a> for <b>1.21.10</b>.</li>
+          <li>Put the mods in <code>%APPDATA%\.minecraft\mods</code>: the Modded Skins mod and
+            <a href="https://modrinth.com/mod/fabric-api" target="_blank" rel="noopener">Fabric API</a>.</li>
+          <li>For voice chat: add <a href="https://modrinth.com/plugin/simple-voice-chat/versions?g=1.21.10&amp;l=fabric" target="_blank" rel="noopener">Simple Voice Chat</a>
+            (pick the <b>Fabric 1.21.10</b> file). It is a separate mod, not part of Modded Skins. Press <b>V</b> in game to set it up.</li>
+          <li>Optional for more FPS: Sodium, Lithium, FerriteCore, EntityCulling.</li>
+          <li>Pick the <b>fabric-loader-1.21.10</b> profile and play.</li>
+        </ol>
+        <p>Already playing? Delete the old Modded Skins file from your mods folder and restart your game after adding the new one. Latest is <b>1.2.8</b> (about 13 MB because it now includes the spawn music).</p>
+        <a class="btn small-btn" href="modded-skins-1.2.8-mc1.21.10.jar" download>Download Modded Skins 1.2.8 (Minecraft 1.21.10)</a>
+        <a class="btn small-btn" href="modded-skins-1.2.8-mc1.21.10.zip" download>Download 1.2.8 as .zip</a>
+        <h3 style="margin-top:1.2em">🎙️ Voice chat mod</h3>
+        <p>Talk to nearby players in game. This is a <b>separate mod</b> (Simple Voice Chat by henkelmax), not part of Modded Skins.
+          Put it in the same mods folder, next to Fabric API. In game, press <b>V</b> to pick your mic.</p>
+        <a class="btn small-btn" href="https://cdn.modrinth.com/data/9eGKb6K1/versions/I5F59jHP/voicechat-fabric-1.21.10-2.6.27.jar" download>Download Simple Voice Chat 2.6.27 (Fabric, Minecraft 1.21.10)</a>
+        <h3 style="margin-top:1.2em">🧵 Fabric (needed for all mods)</h3>
+        <p>Step 1: run the Fabric installer, pick <b>1.21.10</b>, click Install. Step 2: put Fabric API in your mods folder.</p>
+        <a class="btn small-btn" href="https://fabricmc.net/use/installer/" target="_blank" rel="noopener">Get the Fabric installer</a>
+        <a class="btn small-btn" href="https://cdn.modrinth.com/data/P7dR8mSH/versions/tV4Gc0Zo/fabric-api-0.138.4%2B1.21.10.jar" download>Download Fabric API 0.138.4 (Minecraft 1.21.10)</a>
+        <p class="small">Mod downloads come from the official Modrinth pages.</p>
+        <p>Browser blocked the .jar? Download the .zip instead, unzip it, and put the <code>modded-skins-1.2.8-mc1.21.10.jar</code> inside it in your mods folder. Or in the downloads list choose <b>Keep</b>.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>DonutButBetter · Not affiliated with Mojang or Microsoft.</p>
+</footer>
+
+<script>
+  // ---- Edit these when you have them ----
+  const SITE = {
+    address: "donutbutbetter.blockworlds.io",   // Java address (Bloom host)
+    bedrockAddress: "",            // leave "" to use the same as above
+    bedrockPort: "19132",
+    discord: "https://discord.gg/PJrbyckAGG", // e.g. "https://discord.gg/abc123"
+    modpack: "",                   // e.g. the Modrinth pack link
+    store: "https://donutbutbetter.tebex.store/"                      // your Tebex store link, e.g. "https://donutbutbetter.tebex.io"
+  };
+  // ---------------------------------------
+
+  const ipValue = document.getElementById("ip-value");
+  const ipHint = document.getElementById("ip-hint");
+  ipValue.textContent = SITE.address;
+  document.querySelectorAll(".bedrock-ip").forEach(e => e.textContent = SITE.bedrockAddress || SITE.address);
+  document.querySelectorAll(".bedrock-port").forEach(e => e.textContent = SITE.bedrockPort);
+  document.getElementById("ip-button").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(SITE.address);
+      ipHint.textContent = "Copied!";
+    } catch (e) {
+      ipHint.textContent = "Copy it by hand";
+    }
+    setTimeout(() => ipHint.textContent = "Click to copy", 1800);
+  });
+  document.querySelectorAll(".store-link").forEach(a => {
+    if (SITE.store) { a.href = SITE.store; } else { a.removeAttribute("href"); a.style.opacity = .5; a.textContent = "Coming soon"; }
+  });
+  if (SITE.store) document.getElementById("store-pending").remove();
+  for (const [id, url] of [["discord-link", SITE.discord], ["modpack-link", SITE.modpack]]) {
+    if (url) { const a = document.getElementById(id); a.href = url; a.hidden = false; }
+  }
+
+  const tabs = [...document.querySelectorAll("main > section")];
+  const tabLinks = [...document.querySelectorAll(".nav nav a")];
+  function showTab() {
+    const id = location.hash.slice(1);
+    const current = tabs.find(s => s.id && s.id === id) || tabs[0];
+    tabs.forEach(s => s.hidden = s !== current);
+    tabLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === (current.id ? "#" + current.id : "#top")));
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", showTab);
+  showTab();
+
+  const status = document.getElementById("status");
+  const statusText = document.getElementById("status-text");
+  async function checkStatus() {
+    try {
+      const res = await fetch("https://api.mcstatus.io/v2/status/java/" + encodeURIComponent(SITE.address));
+      const data = await res.json();
+      if (data.online) {
+        status.className = "status online";
+        statusText.textContent = `Online · ${data.players?.online ?? 0} / ${data.players?.max ?? "?"} players`;
+      } else {
+        status.className = "status offline";
+        statusText.textContent = "Offline right now (restarting or updating)";
+      }
+    } catch (e) {
+      status.className = "status";
+      statusText.textContent = "Couldn't check the server";
+    }
+  }
+  checkStatus();
+  setInterval(checkStatus, 60000);
+</script>
+</body>
+</html>
