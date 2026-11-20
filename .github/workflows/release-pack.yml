@@ -1,0 +1,21 @@
+# Publishes the files in pack/ as a GitHub Release when a pack-<version> tag is pushed.
+# The installer falls back to the newest release's manifest.json if the website is down.
+name: Release pack
+
+on:
+  push:
+    tags: ['pack-*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" pack/* --title "Pack ${TAG#pack-}" --notes "Modpack files for the DonutButBetter installer."
