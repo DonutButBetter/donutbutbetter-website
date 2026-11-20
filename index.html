@@ -121,6 +121,23 @@ main > section[hidden] { display: none; }
 .rank ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: .92rem; flex: 1; }
 .rank .btn { text-align: center; }
 .tag { align-self: flex-start; background: var(--accent); color: #2a1009; font-size: .72rem; font-weight: 800; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; }
+.rank-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+.rank-card { background: var(--panel); border: 1px solid var(--line); border-top: 5px solid var(--rc); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.rank-card h3 { margin: 0; color: var(--rc); font-size: 1.25rem; }
+.rank-tag { align-self: flex-start; background: #170d08; color: var(--rc); font-weight: 800; font-size: .8rem; padding: 2px 8px; border-radius: 6px; }
+.rank-how { font-weight: 700; color: var(--text); font-size: .9rem; }
+.rank-card ul { margin: 4px 0 0; padding-left: 18px; color: var(--muted); font-size: .88rem; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+.rank-table { width: 100%; border-collapse: collapse; min-width: 720px; background: var(--panel); font-size: .9rem; }
+.rank-table th, .rank-table td { padding: 10px 12px; text-align: center; border-bottom: 1px solid var(--line); }
+.rank-table th { background: #170d08; font-weight: 800; }
+.rank-table td:first-child, .rank-table th:first-child { text-align: left; color: var(--muted); font-weight: 600; position: sticky; left: 0; background: var(--panel); }
+.rank-table th:first-child { background: #170d08; }
+.rank-table tbody tr:nth-child(even), .rank-table tbody tr:nth-child(even) td:first-child { background: #6a4429; }
+.rank-table tbody tr:last-child td { border-bottom: 0; }
+.rank-table .yes { color: var(--green); font-weight: 800; }
+.rank-table .no { color: var(--muted); opacity: .6; }
+#ranks .small { margin: 10px 0; }
 .notice { margin-top: 18px; padding: 14px 18px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); font-size: .9rem; }
 
 .cmds { list-style: none; padding-left: 0 !important; }
@@ -363,16 +380,74 @@ footer { text-align: center; padding: 32px 16px; color: var(--muted); font-size:
 
   <section id="ranks">
     <h2>Ranks</h2>
+    <p class="small">Everyone starts with no rank. Commoner is earned by playing, the rest can be bought in the <a href="#store">store</a>. Each rank keeps every perk of the ones below it.</p>
     <h3 class="sub">Player ranks</h3>
-    <div class="chips">
-      <span class="chip">Commoner</span><span class="chip">Rich</span><span class="chip">VIP</span>
-      <span class="chip">Noble</span><span class="chip">Elite</span><span class="chip">Royal</span>
+    <div class="rank-cards">
+      <div class="rank-card" style="--rc:#FFFFFF">
+        <span class="rank-tag">[ᴄᴏᴍᴍᴏɴᴇʀ]</span>
+        <h3>Commoner</h3>
+        <div class="rank-how">Free: earn $500,000 total</div>
+        <ul><li>3 homes</li><li>/rtp cooldown 35s</li><li>+1 order &amp; auction slot</li></ul>
+      </div>
+      <div class="rank-card" style="--rc:#A3E635">
+        <span class="rank-tag">[ʀɪᴄʜ]</span>
+        <h3>Rich</h3>
+        <div class="rank-how">$4.99 one-time</div>
+        <ul><li>5 homes</li><li>/craft, /ec &amp; /hat anywhere</li><li>Skip the join queue</li></ul>
+      </div>
+      <div class="rank-card" style="--rc:#FFE135">
+        <span class="rank-tag">[ᴠɪᴘ]</span>
+        <h3>VIP</h3>
+        <div class="rank-how">$9.99 one-time</div>
+        <ul><li>8 homes</li><li>/rtp &amp; /tpa cooldown 15s</li><li>+3 order &amp; auction slots</li></ul>
+      </div>
+      <div class="rank-card" style="--rc:#FF7A1A">
+        <span class="rank-tag">[ɴᴏʙʟᴇ]</span>
+        <h3>Noble</h3>
+        <div class="rank-how">$19.99 one-time</div>
+        <ul><li>12 homes</li><li>/rtp &amp; /tpa cooldown 8s</li><li>+4 order &amp; auction slots</li></ul>
+      </div>
+      <div class="rank-card" style="--rc:#A855F7">
+        <span class="rank-tag">[ᴇʟɪᴛᴇ]</span>
+        <h3>Elite</h3>
+        <div class="rank-how">$34.99 one-time</div>
+        <ul><li>20 homes</li><li>Fly at spawn</li><li>/rtp &amp; /tpa cooldown 3s</li></ul>
+      </div>
+      <div class="rank-card" style="--rc:#FF5FA2">
+        <span class="rank-tag">[ʀᴏʏᴀʟ]</span>
+        <h3>Royal</h3>
+        <div class="rank-how">$49.99 one-time</div>
+        <ul><li>30 homes</li><li>No /rtp or /tpa cooldown</li><li>Max order &amp; auction slots</li></ul>
+      </div>
     </div>
+
+    <h3 class="sub">Compare perks</h3>
+    <div class="table-wrap">
+      <table class="rank-table">
+        <thead>
+          <tr><th>Perk</th><th>No rank</th><th style="color:#FFFFFF">Commoner</th><th style="color:#A3E635">Rich</th><th style="color:#FFE135">VIP</th><th style="color:#FF7A1A">Noble</th><th style="color:#A855F7">Elite</th><th style="color:#FF5FA2">Royal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>How to get it</td><td>Everyone</td><td>Earn $500k</td><td>$4.99</td><td>$9.99</td><td>$19.99</td><td>$34.99</td><td>$49.99</td></tr>
+          <tr><td>Homes</td><td>2</td><td>3</td><td>5</td><td>8</td><td>12</td><td>20</td><td>30</td></tr>
+          <tr><td>/rtp cooldown</td><td>45s</td><td>35s</td><td>25s</td><td>15s</td><td>8s</td><td>3s</td><td>None</td></tr>
+          <tr><td>/tpa &amp; /tpahere cooldown</td><td>Default</td><td>Default</td><td>25s</td><td>15s</td><td>8s</td><td>3s</td><td>None</td></tr>
+          <tr><td>Extra order &amp; auction slots</td><td>—</td><td>+1</td><td>+2</td><td>+3</td><td>+4</td><td>+5</td><td>+6</td></tr>
+          <tr><td>/craft, /ec &amp; /hat anywhere</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Skip the join queue</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Fly at spawn</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Tag in chat &amp; tab</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">Check how much you've earned in game with <code>/earnings</code>. Already have a paid rank? Upgrades cost $4.99 less (see the <a href="#store">store</a>).</p>
+
     <h3 class="sub">Staff team</h3>
     <div class="chips staff">
-      <span class="chip">Owner</span><span class="chip">Co-Owner</span><span class="chip">Dev</span>
-      <span class="chip">Sr Admin</span><span class="chip">Admin</span><span class="chip">Helper</span>
+      <span class="chip" style="color:#CE2029">Owner</span><span class="chip" style="color:#87CEEB">Co-Owner</span><span class="chip" style="color:#7F8C8D">Dev</span>
+      <span class="chip" style="color:#0077BE">Sr Admin</span><span class="chip" style="color:#3B6FE0">Admin</span><span class="chip" style="color:#00AA00">Helper</span>
     </div>
+    <p class="small">Staff ranks can't be bought.</p>
   </section>
 
   <section id="store">
