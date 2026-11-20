@@ -1,0 +1,83 @@
+{
+    "version":  "1.2.8",
+    "minecraft":  "1.21.10",
+    "fabricLoader":  "0.20.1",
+    "profileName":  "DonutButBetter",
+    "loader":  {
+                   "path":  "fabric-loader-0.20.1-1.21.10.json",
+                   "sha512":  "c1bf4abbdca579ddbfeec933fcbf3e92a4710f4e9fafdff81c1e3c02cf54c47f20dced9054a8611c5c295018b6cd1f48b9b7d458ccd7e46017952e9155712e2a",
+                   "size":  2925,
+                   "urls":  [
+                                "https://donutbutbetter-website.donutbutbetter.workers.dev/pack/fabric-loader-0.20.1-1.21.10.json",
+                                "https://github.com/DonutButBetter/donutbutbetter-website/releases/download/pack-1.2.8/fabric-loader-0.20.1-1.21.10.json",
+                                "https://meta.fabricmc.net/v2/versions/loader/1.21.10/0.20.1/profile/json"
+                            ]
+               },
+    "files":  [
+                  {
+                      "path":  "mods/fabric-api-0.138.4+1.21.10.jar",
+                      "sha512":  "5e64c53391dfd1c059777d671c52be17a4e27a29d9bd7340ea9e3f55ce7a770b38db0a15e0966e981ee8c1b9372fb89543a278521624689268acebb85bd5c6e9",
+                      "size":  2375888,
+                      "urls":  [
+                                   "https://cdn.modrinth.com/data/P7dR8mSH/versions/tV4Gc0Zo/fabric-api-0.138.4%2B1.21.10.jar"
+                               ]
+                  },
+                  {
+                      "path":  "mods/sodium-fabric-0.7.3+mc1.21.10.jar",
+                      "sha512":  "1cccdc75d972f5c176a488dcc84cce7320b608a2d105412f2847245affbf5aa22b1995eda392132453fa6e1a9154ac99a87acaf8d7989b9f1a23ac1059a93daf",
+                      "size":  1676903,
+                      "urls":  [
+                                   "https://cdn.modrinth.com/data/AANobbMI/versions/sFfidWgd/sodium-fabric-0.7.3%2Bmc1.21.10.jar"
+                               ]
+                  },
+                  {
+                      "path":  "mods/lithium-fabric-0.20.1+mc1.21.10.jar",
+                      "sha512":  "79b2892d123f3bb12649927dd8fccc25c955ff38a19f3aba7cd0180c4cf5506c2a76d49418b13050f90bba7bb59f3623af06e8a275e2ae8c63808084043902bb",
+                      "size":  835455,
+                      "urls":  [
+                                   "https://cdn.modrinth.com/data/gvQqBUqZ/versions/NsswKiwi/lithium-fabric-0.20.1%2Bmc1.21.10.jar"
+                               ]
+                  },
+                  {
+                      "path":  "mods/ferritecore-8.1.0-fabric.jar",
+                      "sha512":  "0596c83d69867380260e20500e5ab184415a1178317464c2b7c8c68a87db435fbe7a80b22b4f50b56558d6506f7dbb35ad7bda16f46eab5b79d38f0d726f08f5",
+                      "size":  82450,
+                      "urls":  [
+                                   "https://cdn.modrinth.com/data/uXXizFIs/versions/bPLllEgi/ferritecore-8.1.0-fabric.jar"
+                               ]
+                  },
+                  {
+                      "path":  "mods/entityculling-fabric-1.11.3-mc1.21.10.jar",
+                      "sha512":  "43dfbad19d24d3a96180b9ea457764d8dae2a38e3d2f9c66e1792c134455e39af1e017b46ec13b91989636ad10078de551f988802e7212f766e8bdcb39a32d33",
+                      "size":  1528762,
+                      "urls":  [
+                                   "https://cdn.modrinth.com/data/NNAgCjsB/versions/1EFDjmh5/entityculling-fabric-1.11.3-mc1.21.10.jar"
+                               ]
+                  },
+                  {
+                      "path":  "mods/modmenu-16.0.1.jar",
+                      "sha512":  "be01bb5a80a39fc51223ef142713ba3cbc2c23658f0c8bd36ceed7ecd163684b7dc808f2ef23dce7fb350bdfd010de9787f2177e115cae3ea91b96a83bd6ea16",
+                      "size":  1083558,
+                      "urls":  [
+                                   "https://cdn.modrinth.com/data/mOgUt4GM/versions/pYbFlVtR/modmenu-16.0.1.jar"
+                               ]
+                  },
+                  {
+                      "path":  "mods/voicechat-fabric-1.21.10-2.6.27.jar",
+                      "sha512":  "521e53d9b3211fc8d449d90017f7875bdf2c52c1a6b50584af7d483e7cf24c38414206b591098bba07ec73c8a51fffbc23ad23a657b995402c741d4cbe35c9f7",
+                      "size":  5547826,
+                      "urls":  [
+                                   "https://cdn.modrinth.com/data/9eGKb6K1/versions/I5F59jHP/voicechat-fabric-1.21.10-2.6.27.jar"
+                               ]
+                  },
+                  {
+                      "path":  "mods/modded-skins-1.2.8.jar",
+                      "sha512":  "dd74bb64cad30ec53e7d02fc8bb748c8eb7ec8252e3f35f02001b7e7033cbaaa474f3dfd2b05c28767052280b59d953b7ba62376946bcda950f89f817a23ddff",
+                      "size":  756787,
+                      "urls":  [
+                                   "https://donutbutbetter-website.donutbutbetter.workers.dev/pack/modded-skins-1.2.8.jar",
+                                   "https://github.com/DonutButBetter/donutbutbetter-website/releases/download/pack-1.2.8/modded-skins-1.2.8.jar"
+                               ]
+                  }
+              ]
+}
